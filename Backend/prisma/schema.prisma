@@ -3,16 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  email    String
-  mobile   String
+  id       String  @id @default(uuid())
+  username String
+  mobileNo   String  @unique
   password String
-  otp      String?
+  otp      String
   verified Boolean @default(false)
+
 }
