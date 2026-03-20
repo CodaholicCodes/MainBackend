@@ -1,7 +1,7 @@
 import fp from "fastify-plugin"
 import { FastifyPluginAsync } from "fastify"
-import { PrismaClient } from "@prisma/client"
-
+import { PrismaClient } from "../../prisma/generated/prisma/client";
+import { PrismaPg} from "@prisma/adapter-pg"
 
 // This plugin is used to to connect database before server starts
 declare module 'fastify' {
@@ -11,7 +11,8 @@ declare module 'fastify' {
 }
 
 const prismaPlugin: FastifyPluginAsync = fp(async (server, options) => {
-    const prisma =new PrismaClient()
+    const adapter = new PrismaPg({connectionString :process.env.DATABASE_URL})
+    const prisma = new PrismaClient({adapter})
     await prisma.$connect()
     //Attaching prisma to server
 

@@ -4,18 +4,33 @@ import jwt from "@fastify/jwt"
 import authRoutes from "./routes/auth.js"
 import prismaPlugin from "./plugins/prismaPlugin.js"
 
+import "dotenv/config";
+import { defineConfig ,env } from "prisma/config"
 const app = Fastify()
 
-app.register(cors)
-app.register(prismaPlugin)
-app.register(jwt, {
-  secret: "supersecret"
-})
 
-app.register(authRoutes, {
-  prefix: "/api"
-})
-
- app.listen({ port: 5000 },  () => {
-  console.log("Server running on http://localhost:5000")
-})
+const start = async () => 
+{
+ try {
+  
+    await app.register(cors)
+  await app.register(prismaPlugin)
+  console.log("Plugin registered")
+    await app.register(jwt, {
+      secret: "DialUrbanoSecret"
+    })
+    console.log(typeof(env("DATABASE_URL")))
+    await app.register(authRoutes)
+   
+  await app.listen({ port: 5000 }, () => {
+      console.log("Server running on http://localhost:5000")
+  })
+   app.get("/", (req,reply) => {
+  reply.send("Hello");
+   })
+   
+ } catch (error) {
+   console.log(error);
+ }
+}
+  start()

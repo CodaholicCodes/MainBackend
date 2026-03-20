@@ -1,94 +1,101 @@
-import { FastifyInstance } from "fastify"
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
 import { SignedBodyType } from "../types/authType";
+import { loginType } from "../types/loginType";
+
+interface otpType{
+  otp: string,
+  mobileNo : string
+}
+
 
 
 export default async function authRoutes(app: FastifyInstance) {
 
   // SIGNUP
-  app.post<{ Body: SignedBodyType }>("/signup", async (request, reply) => {
-
-    const { username, mobileNo, password } = request.body 
+  app.post<{ Body: SignedBodyType }>("/signup", async (request: FastifyRequest<{Body : SignedBodyType}>, reply : FastifyReply) => {
+    
+    const {email,profile_name,mobileNo } = request.body 
     const prisma = request.server.prisma;
-    const mobNo:number=Number(mobileNo)
-    const code: number = mobNo % Math.pow(10, 5)
-    const user = await prisma.user.create({
-      data: {
-        username,
-         mobileNo : String(mobileNo) ,
-        password,
-        otp : String(code),
-        verified: false
-      }
-    })
+    try {
+    const user = await prisma.user.findFirst({
+      where: { mobileNo }
+    });
 
-    return reply.send({
-      message: "Signup successful",
-     user
-    })
+    if (user) {
+      return reply.send({ message: " Account already exists .Use another mobile number"})
+    }
+    const mobNo: number = Number(mobileNo);
+    const code: number = mobNo % Math.pow(10, 5);
+
+      const newUser = await prisma.user.upsert({
+        where: { mobileNo: mobileNo },
+        update: { otp: String(code) },
+        create: {
+          email: email,
+          mobileNo: mobileNo,
+          profile_name,
+          otp: String(code),
+        }
+      });
+        return reply.send({
+          message: "Verify otp",
+          newUser
+    });
+  } catch (error) {
+      return reply.code(500).send({ error });
+  }
+    
+  
+})
+
+
+  app.post<{ Body: otpType }>("/verify-otp", async (request: FastifyRequest<{ Body: otpType }>, reply: FastifyReply) => {
+    const { otp,mobileNo } = request.body;
+    const prisma = request.server.prisma;
+    try {
+      const user = await prisma.user.findUnique({
+        where: { mobileNo}
+      });
+      if (!user)
+        return reply.code(404).send("User not found");
+
+      if (otp != user.otp)
+        return reply.code(400).send({ message: "Wrong Otp" });
+
+       const token = await request.server.jwt.sign({ mobile: user.mobileNo});
+        return reply.code(200).send({ message: "OTP verified sucessfully",token });
+    } catch (err) {
+      return reply.code(401).send({ message: err });
+    }
+
+    
+  }
+  );
+
+
+  // LOGIN
+  app.post<{ Body: loginType }>("/login", async (request: FastifyRequest<{Body : loginType}>, reply) => {
+
+    const { username, mobileNo } = request.body;
+    const prisma = request.server.prisma;
+    try {
+     
+      const user = await prisma.user.findUnique({
+        where: { mobileNo }
+      });
+
+      if (!user) {
+        return reply.code(401).send({ message: "User not found" })
+      }
+
+      return reply.send({
+        message: "verify-otp",
+   
+      });
+    } catch (err) {
+      return reply.code(500).send({ message: err });
+    }
 
   })
-
-
-  //// OTP VERIFY
-  //app.post("/verify-otp", async (request, reply) => {
-
-  //  const { mobile, otp } = request.body as any
-  //  const prisma = request.server.prisma;
-  //  const user = await prisma.user.findFirst({
-  //    where: { mobileNo }
-  //  })
-
-  //  if (!user) {
-  //    return reply.send({ message: "User not found" })
-  //  }
-
-  //  if (user.otp !== otp) {
-  //    return reply.send({ message: "Invalid OTP" })
-  //  }
-
-  //  await prisma.user.update({
-  //    where: { id: user.id },
-  //    data: { verified: true }
-  //  })
-
-  //  return reply.send({
-  //    message: "OTP verified"
-  //  })
-
-  //})
-
-
-  //// LOGIN
-  //app.post("/login", async (request, reply) => {
-
-  //  const { username, password } = request.body as any
-  //  const prisma = request.server.prisma;
-  //  const user = await prisma.user.findUnique({
-  //    where: { username }
-  //  })
-
-  //  if (!user) {
-  //    return reply.send({ message: "User not found" })
-  //  }
-
-  //  if (!user.verified) {
-  //    return reply.send({ message: "Verify OTP first" })
-  //  }
-
-  //  if (user.password !== password) {
-  //    return reply.send({ message: "Invalid password" })
-  //  }
-
-  //  const token = app.jwt.sign({
-  //    id: user.id,
-  //    username: user.username
-  //  })
-
-  //  return reply.send({
-  //    message: "Login successful",
-  //    token
-  //  })
-
-  //})
 
 }
