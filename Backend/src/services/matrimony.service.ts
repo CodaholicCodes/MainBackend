@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const createProfileService = async (data: any) => {
+export const createProfileService = async (data: MatrimonyServiceBodyType) => {
   try {
-    // 🔥 External API call (POST)
+    // External API call (POST)
     const response = await axios.post(
-      "https://api.example.com/create-profile", // 👉 apni real API yaha daalo
+      "http://localhost:3002/api/matrimony/create-profile", // apni real API yaha daalo
       data
     );
 

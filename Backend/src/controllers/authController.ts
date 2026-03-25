@@ -76,8 +76,8 @@ export const postLogin=async (request: FastifyRequest<{Body : loginType}>, reply
         where: { mobileNo }
       });
 
-      if (!user) {
-        return reply.code(401).send({ message: "User not found" })
+      if (!user || user.profile_name != username) {
+        return reply.code(401).send({ message: "Invalid Details . User not found" })
       }
 
       return reply.send({
