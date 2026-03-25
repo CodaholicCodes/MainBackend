@@ -3,11 +3,14 @@ import cors from "@fastify/cors"
 import jwt from "@fastify/jwt"
 import authRoutes from "./routes/auth.js"
 import prismaPlugin from "./plugins/prismaPlugin.js"
+import matrimonyRoutes from "./routes/matrimony.routes";
 
 import "dotenv/config";
 import { defineConfig ,env } from "prisma/config"
 const app = Fastify()
 
+// Register Routes
+app.register(matrimonyRoutes, { prefix: "/api" });
 
 const start = async () => 
 {
