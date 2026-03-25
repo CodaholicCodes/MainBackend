@@ -3,7 +3,7 @@ import { FastifyPluginAsync } from "fastify"
 import { PrismaClient } from "../../prisma/generated/prisma/client";
 import { PrismaPg} from "@prisma/adapter-pg"
 
-// This plugin is used to to connect database before server starts
+// This plugin is used to to connect to auth database before server starts
 declare module 'fastify' {
     interface FastifyInstance {
         prisma : PrismaClient

@@ -15,11 +15,10 @@ const start = async () =>
   
     await app.register(cors)
   await app.register(prismaPlugin)
-  console.log("Plugin registered")
     await app.register(jwt, {
       secret: "DialUrbanoSecret"
     })
-    console.log(typeof(env("DATABASE_URL")))
+   
     await app.register(authRoutes)
    
   await app.listen({ port: 5000 }, () => {
