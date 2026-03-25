@@ -1,16 +1,33 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import * as matrimonyService from "../services/matrimony.service";
 
-export const getMatrimonyData = async (
+export const createProfile = async (
   req: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
-    const data = await matrimonyService.fetchMatrimonyData();
+    const { full_name, gender, age, education, user_id } = req.body as any;
 
-    return reply.send({
+    // Validation (basic)
+    if (!full_name || !gender || !age || !education || !user_id) {
+      return reply.status(400).send({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    const result = await matrimonyService.createProfileService({
+      full_name,
+      gender,
+      age,
+      education,
+      user_id,
+    });
+
+    return reply.status(201).send({
       success: true,
-      data,
+      message: "Profile created successfully",
+      data: result,
     });
 
   } catch (error: any) {

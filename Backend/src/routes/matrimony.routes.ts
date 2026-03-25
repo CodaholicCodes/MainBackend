@@ -3,6 +3,7 @@ import * as matrimonyController from "../controllers/matrimony.controller";
 
 export default async function matrimonyRoutes(app: FastifyInstance) {
 
-  app.get("/matrimony-data", matrimonyController.getMatrimonyData);
+  // POST: Create Profile
+  app.post("/create-profile", matrimonyController.createProfile);
 
 }
