@@ -1,5 +1,5 @@
 export interface SignedBodyType{
-    email: string,
+    email?: string,
     profile_name: string,
     mobileNo :string
     

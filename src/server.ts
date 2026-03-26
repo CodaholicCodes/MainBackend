@@ -22,7 +22,7 @@ const start = async () =>
       secret: "DialUrbanoSecret"
     })
    
-   await app.register(authRoutes)
+   await app.register(authRoutes, { prefix: "/api/auth" });
    await app.register(matrimonyRoutes, { prefix: "/api/matrimony" });
    
   await app.listen({ port: 5000 }, () => {

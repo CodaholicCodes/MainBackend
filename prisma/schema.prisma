@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output = "./generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -8,19 +8,18 @@ datasource db {
 }
 
 model User {
-  id              String  @id @default(uuid())
-  email           String?  @db.VarChar(255) @unique
-  profile_name    String?  @db.VarChar(255)
-  mobileNo        String  @unique @db.VarChar(20)
-  referral_code   String?  @db.VarChar(20) @default("DialUrbano")
-  referred_by     String?  @db.VarChar(20) @default("DialUrbano")
-  otp             String  @db.VarChar(6)
-  failed_attempts  Int?    @default(0) 
+  id                 String   @id @default(uuid())
+  email              String?  @unique @db.VarChar(255)
+  profile_name       String?  @db.VarChar(255)
+  mobileNo           String   @unique @db.VarChar(20)
+  referral_code      String?  @default("DialUrbano") @db.VarChar(20)
+  referred_by        String?  @default("DialUrbano") @db.VarChar(20)
+  otp                String   @db.VarChar(6)
+  failed_attempts    Int?     @default(0)
   is_email_verified  Boolean? @default(false)
-  is_locked        Boolean?  @default(false)
-  is_active        Boolean?  @default(true)
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-
- 
+  is_locked          Boolean? @default(false)
+  is_active          Boolean? @default(true)
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  is_mobile_verified Boolean  @default(false)
 }
