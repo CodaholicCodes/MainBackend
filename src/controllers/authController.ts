@@ -6,7 +6,9 @@ import generateOtp from "../utils/generateOTP";
 
 export const postSignup = async (request: FastifyRequest<{ Body: SignedBodyType }>, reply: FastifyReply) => {
     
-    const {email,profile_name,mobileNo } = request.body 
+  const { email, profile_name, mobileNo } = request.body 
+  if (mobileNo.length != 10)
+    return reply.code(400).send({ "message": "Please enter valid number " });
     const prisma = request.server.prisma;
     try {
     const user = await prisma.user.findUnique({
