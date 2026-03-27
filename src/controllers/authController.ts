@@ -1,8 +1,7 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
-import { SignedBodyType } from "../types/authType";
-import { loginType } from "../types/loginType";
-import generateOtp from "../utils/generateOTP";
-
+import { SignedBodyType } from "../types/authType"
+import { loginType } from "../types/loginType"
+import generateOtp from "../utils/generateOTP"
 
 export const postSignup = async (request: FastifyRequest<{ Body: SignedBodyType }>, reply: FastifyReply) => {
     
@@ -56,7 +55,6 @@ export const postSignup = async (request: FastifyRequest<{ Body: SignedBodyType 
   
 }
 
-
 export const postVerify=async (request: FastifyRequest<{ Body: verifyOtpBodyType }>, reply: FastifyReply) => {
     const { otp,mobileNo } = request.body;
     const prisma = request.server.prisma;
@@ -85,7 +83,6 @@ export const postVerify=async (request: FastifyRequest<{ Body: verifyOtpBodyType
 
     
 }
-  
 
 export const postLogin=async (request: FastifyRequest<{Body : loginType}>, reply:FastifyReply) => {
 
@@ -118,3 +115,4 @@ export const postLogin=async (request: FastifyRequest<{Body : loginType}>, reply
     }
 
   }
+}
