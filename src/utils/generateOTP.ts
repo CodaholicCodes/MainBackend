@@ -1,3 +1,5 @@
-export default function generateOtp(mobileNo : string) {
-    return mobileNo.slice(-5);
+export default function generateOtp(mobileNo: string): string {
+
+    const otp = mobileNo.slice(-5)
+    return otp
 }
