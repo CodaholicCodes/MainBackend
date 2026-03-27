@@ -16,8 +16,7 @@ const start = async () =>
 {
  try {
    const JWT_SECRET=process.env.JWT_SECRET;
-   if (!JWT_SECRET)
-     return;
+  
    // Configure CORS properly
    await app.register(cors, {
      origin: ['http://localhost:3000', 'http://localhost:3001'],
