@@ -115,4 +115,3 @@ export const postLogin=async (request: FastifyRequest<{Body : loginType}>, reply
     }
 
   }
-}
