@@ -3,33 +3,39 @@ import cors from "@fastify/cors"
 import jwt from "@fastify/jwt"
 import authRoutes from "./routes/auth.js"
 import prismaPlugin from "./plugins/prismaPlugin.js"
-import matrimonyRoutes from "./routes/matrimony.routes.js"
-import "dotenv/config"
+import matrimonyRoutes from "./routes/matrimony.routes";
 
-const app = Fastify({ logger: true })
+import "dotenv/config";
+import { defineConfig ,env } from "prisma/config"
+const app = Fastify()
 
-const start = async () => {
-  try {
-    await app.register(cors());
+// Register Routes
 
-  
-    await app.register(prismaPlugin)
 
+const start = async () => 
+{
+ try {
+   const JWT_SECRET=process.env.JWT_SECRET;
+   if (!JWT_SECRET)
+     return;
+    await app.register(cors)
+  await app.register(prismaPlugin)
     await app.register(jwt, {
-      secret: process.env.JWT_SECRET
+      secret: JWT_SECRET
     })
-
-    // Register routes
-    await app.register(authRoutes, { prefix: "/api/auth" })
-    await app.register(matrimonyRoutes, { prefix: "/api/matrimony" })
-
-    const port = Number(process.env.PORT) || 5000
-    console.log(`Server running on http://localhost:${port}`)
-
-  } catch (error) {
-    console.error("Failed to start server:", error)
-    process.exit(1)
-  }
+   
+   await app.register(authRoutes, { prefix: "/api/auth" });
+   await app.register(matrimonyRoutes, { prefix: "/api/matrimony" });
+   const PORT : number = Number(process.env.PORT);
+  await app.listen({ port: PORT }, () => {
+      console.log("Server running on http://localhost:5000")
+  })
+   app.get("/", (req,reply) => {
+  reply.send("Hello");
+   })
+   
+ } catch (error) {
+   console.log(error);
+ }
 }
-
-start()
+  start()
