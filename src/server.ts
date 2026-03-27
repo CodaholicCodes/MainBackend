@@ -18,7 +18,13 @@ const start = async () =>
    const JWT_SECRET=process.env.JWT_SECRET;
    if (!JWT_SECRET)
      return;
-    await app.register(cors())
+   // Configure CORS properly
+   await app.register(cors, {
+     origin: ['http://localhost:3000', 'http://localhost:3001'],
+     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+     credentials: true,
+     allowedHeaders: ['Content-Type', 'Authorization']
+   })
   await app.register(prismaPlugin)
     await app.register(jwt, {
       secret: JWT_SECRET
