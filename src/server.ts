@@ -29,19 +29,8 @@ const start = async () => {
     await app.register(authRoutes, { prefix: "/api/auth" })
     await app.register(matrimonyRoutes, { prefix: "/api/matrimony" })
 
-    // Health check endpoint
-    app.get("/health", async (req, reply) => {
-      try {
-        await app.prisma.$queryRaw`SELECT 1`
-        return { status: 'healthy', database: 'connected' }
-      } catch (error) {
-        return reply.status(500).send({ status: 'unhealthy', database: 'disconnected' })
-      }
-    })
+   
 
-    app.get("/", (req, reply) => {
-      reply.send({ message: "API is running", endpoints: ["/api/auth/*", "/api/matrimony/*"] })
-    })
 
     const port = Number(process.env.PORT) || 5000
     await app.listen({ port, host: '0.0.0.0' })
