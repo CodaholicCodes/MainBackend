@@ -2,29 +2,30 @@
    "type": "module",
    "name": "backend",
    "version": "1.0.0",
-   "main": "index.js",
+   "main": "dist/server.js", 
    "scripts": {
-      "dev": "tsx watch src/server.ts",
-      "start": "tsx watch src/server.ts"
+     "dev": "tsx watch src/server.ts",
+     "build": "prisma generate && tsc",
+     "start": "node dist/server.js",
+     "postinstall": "prisma generate"
    },
    "keywords": [],
-   "author": "",
+   "author": "Kundan Singh",
    "license": "ISC",
-   "description": "",
+   "description": "DialUrbano Matrimony Backend",
    "dependencies": {
-      "@fastify/cors": "^11.2.0",
-      "@fastify/jwt": "^10.0.0",
-      "@prisma/adapter-pg": "^7.5.0",
-      "@prisma/client": "^7.5.0",
-      "axios": "^1.13.6",
-      "fastify": "^5.8.2"
+     "@fastify/cors": "^11.2.0",
+     "@fastify/jwt": "^10.0.0",
+     "@prisma/adapter-pg": "^7.5.0",
+     "@prisma/client": "^7.5.0",
+     "axios": "^1.13.6",
+     "fastify": "^5.8.2",
+     "dotenv": "^16.4.7"
    },
    "devDependencies": {
-      "@types/axios": "^0.9.36",
-      "@types/node": "^25.5.0",
-      "prisma": "^7.5.0",
-      "ts-node": "^10.9.2",
-      "tsx": "^4.21.0",
-      "typescript": "^5.9.3"
+     "@types/node": "^22.10.0",
+     "prisma": "^7.5.0",
+     "tsx": "^4.21.0",
+     "typescript": "^5.7.0"
    }
-}
+ }
