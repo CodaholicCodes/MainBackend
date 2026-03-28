@@ -7,6 +7,7 @@
     "esModuleInterop": true,
     "outDir": "./dist",
     "baseUrl": ".",
+    "types": ["node"],   // ✅ ADD THIS
     "paths": {
       "@prisma/client": ["./prisma/generated/client/client.js"]
     }

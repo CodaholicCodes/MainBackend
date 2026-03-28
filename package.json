@@ -6,10 +6,9 @@
    "scripts": {
       "postinstall": "prisma generate",
       "build": "prisma generate && tsc",
-      "start": "tsx src/server.ts"   ,
-         "dev": "prisma generate && tsx watch src/server.ts"
-    },
-    
+      "start": "tsx src/server.ts",
+      "dev": "prisma generate && tsx watch src/server.ts"
+   },
    "keywords": [],
    "author": "",
    "license": "ISC",
