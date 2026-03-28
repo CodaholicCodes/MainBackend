@@ -12,7 +12,7 @@ const start = async () => {
   try {
     // Configure CORS properly
     await app.register(cors, {
-      origin: ['http://localhost:3000', 'http://localhost:3001'],
+      origin: ['http://localhost:3000', 'http://localhost:3001','http://10.170.198.80:3000'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization']
