@@ -11,7 +11,7 @@ const app = Fastify({ logger: true })
 
 const start = async () => {
   try {
-    console.log(process.env.DATABASE_URL);
+    console.log("From Plugin",process.env.DATABASE_URL);
     // Configure CORS properly
     await app.register(cors, {
       origin: ['http://localhost:3000', 'http://localhost:3001'],
