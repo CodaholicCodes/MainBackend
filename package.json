@@ -4,12 +4,12 @@
    "version": "1.0.0",
    "main": "index.js",
    "scripts": {
-    "generate": "prisma generate",
-   "dev": "prisma generate && tsx watch src/server.ts",
-   "start": "prisma generate && tsx src/server.ts",
-   "postinstall": "prisma generate"
-
-},
+      "postinstall": "prisma generate",
+      "build": "prisma generate && tsc",
+      "start": "tsx src/server.ts"   ,
+         "dev": "prisma generate && tsx watch src/server.ts"
+    },
+    
    "keywords": [],
    "author": "",
    "license": "ISC",

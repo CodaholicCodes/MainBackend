@@ -1,7 +1,7 @@
 import fp from "fastify-plugin"
 import { FastifyPluginAsync } from "fastify"
-// In your TS files, point to the root folder
-import { PrismaClient } from '../generated/client.js';
+
+import { PrismaClient } from '@prisma/client'
 import { PrismaPg} from "@prisma/adapter-pg"
 
 // This plugin is used to to connect to auth database before server starts
