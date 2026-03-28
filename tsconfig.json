@@ -5,6 +5,11 @@
     "moduleResolution": "bundler",
     "strict": true,
     "esModuleInterop": true,
-   
-  }
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@prisma/client": ["./prisma/generated/client/client.js"]
+    }
+  },
+  "include": ["src/**/*", "prisma/generated/client/**/*"]
 }

@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import * as matrimonyController from "../controllers/matrimony.controller";
+import * as matrimonyController from "../controllers/matrimony.controller.js";
 
 export default async function matrimonyRoutes(app: FastifyInstance) {
 

@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import * as matrimonyService from "../services/matrimony.service";
+import * as matrimonyService from "../services/matrimony.service.js";
 
 export const createProfile = async (
   req: FastifyRequest<{Body : MatrimonyProfileBodyType}>,

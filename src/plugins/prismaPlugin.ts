@@ -1,46 +1,27 @@
 import fp from "fastify-plugin"
 import { FastifyPluginAsync } from "fastify"
-import { PrismaClient } from "../../prisma/generated/prisma/client.js"
-import { PrismaPg } from "@prisma/adapter-pg"
+// In your TS files, point to the root folder
+import { PrismaClient } from '../generated/client.js';
+import { PrismaPg} from "@prisma/adapter-pg"
 
+// This plugin is used to to connect to auth database before server starts
 declare module 'fastify' {
     interface FastifyInstance {
-        prisma: PrismaClient
+        prisma : PrismaClient
     }
 }
 
 const prismaPlugin: FastifyPluginAsync = fp(async (server, options) => {
-    const databaseUrl = process.env.DATABASE_URL
+    const adapter = new PrismaPg({connectionString :process.env.DATABASE_URL})
+    const prisma = new PrismaClient({adapter})
+    await prisma.$connect()
+    //Attaching prisma to server
 
-    if (!databaseUrl) {
-        throw new Error('DATABASE_URL is not defined in environment variables')
-    }
 
-    console.log('Connecting to database...')
-    console.log('URL:', databaseUrl.replace(/:[^:@]*@/, ':****@')) // Hide password in logs
-
-    try {
-        const adapter = new PrismaPg({
-            connectionString: databaseUrl
-        })
-        const prisma = new PrismaClient({
-            adapter,
-            log: ['query', 'info', 'warn', 'error']
-        })
-
-        await prisma.$connect()
-        console.log('Database connected successfully')
-
-        server.decorate('prisma', prisma)
-
-        server.addHook('onClose', async (server) => {
-            await server.prisma.$disconnect()
-            console.log('Database disconnected')
-        })
-    } catch (error) {
-        console.error('Database connection failed:', error)
-        throw error
-    }
+    server.decorate('prisma', prisma)
+    server.addHook('onClose', async (server) => {
+        await server.prisma.$disconnect()
+    })
 })
 
 export default fp(prismaPlugin)

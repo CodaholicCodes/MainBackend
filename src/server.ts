@@ -1,5 +1,5 @@
 import Fastify from "fastify"
-import fastifyCors from "@fastify/cors"
+import cors from "@fastify/cors"
 import jwt from "@fastify/jwt"
 import authRoutes from "./routes/auth.js"
 import prismaPlugin from "./plugins/prismaPlugin.js"
@@ -10,21 +10,13 @@ const app = Fastify({ logger: true })
 
 const start = async () => {
   try {
-
-await app.register(fastifyCors, {
-  // Specify allowed origins as an array of strings or RegExp
-  origin: ['http://localhost:3001', 'http://localhost:3000'],
-  // Specify allowed HTTP methods
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  // Allow cookies or authentication tokens to be sent with requests
-  credentials: true,
-  // Configure the Access-Control-Allow-Headers CORS header
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  // Set the maxAge for preflight requests to be cached by the browser
-  maxAge: 86400 // in seconds (24 hours)
-});
-
-   
+    // Configure CORS properly
+    await app.register(cors, {
+      origin: ['http://localhost:3000', 'http://localhost:3001'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization']
+    })
 
     // Register plugins
     await app.register(prismaPlugin)

@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
-import { SignedBodyType } from "../types/authType"
-import { loginType } from "../types/loginType"
+import { SignedBodyType } from "../types/authType.js"
+import { loginType } from "../types/loginType.js"
 import generateOtp from "../utils/generateOTP.js"
 
 export const postSignup = async (request: FastifyRequest<{ Body: SignedBodyType }>, reply: FastifyReply) => {

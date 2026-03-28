@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
-import { SignedBodyType } from "../types/authType";
-import { loginType } from "../types/loginType";
+import { SignedBodyType } from "../types/authType.js";
+import { loginType } from "../types/loginType.js";
 import * as  authController from "../controllers/authController.js"
 
 
