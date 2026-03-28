@@ -1,10 +1,11 @@
+import "dotenv/config"
+
 import Fastify from "fastify"
 import cors from "@fastify/cors"
 import jwt from "@fastify/jwt"
 import authRoutes from "./routes/auth.js"
 import prismaPlugin from "./plugins/prismaPlugin.js"
 import matrimonyRoutes from "./routes/matrimony.routes.js"
-import "dotenv/config"
 
 const app = Fastify({ logger: true })
 

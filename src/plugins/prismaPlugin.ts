@@ -16,7 +16,7 @@ const prismaPlugin: FastifyPluginAsync = fp(async (server, options) => {
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false } 
     })
-    const prisma = new PrismaClient({adapter})
+    const prisma = new PrismaClient();
     await prisma.$connect()
     //Attaching prisma to server
 
